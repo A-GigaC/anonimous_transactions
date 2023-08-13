@@ -12,3 +12,4 @@ npx hardhat node
 npx hardhat run scripts/deploy.ts
 ```
 # anonimous_transactions
+# anonimous_transactions
