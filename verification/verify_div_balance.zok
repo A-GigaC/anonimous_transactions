@@ -1,0 +1,41 @@
+import "hashes/sha256/512bitPacked" as sha256packed;
+
+def main(
+    private field secret_key_current,
+    private field balance_part_1,
+    private field balance_part_2, 
+    private field secret_key_1,
+    private field secret_key_2, 
+    
+    field h_curr_1,field h_curr_2,
+    field h_div_part_1_1,field h_div_part_1_2, 
+    field h_div_part_2_1,field h_div_part_2_2
+    ) -> bool {
+    
+    // checks that two parts is positive
+    bool check_1 = ((balance_part_1 >= 0) && (balance_part_2 >=0));
+
+
+    // checks that sum of two parts is equal to divided balance
+    field balance = balance_part_1 + balance_part_2;
+    field[2] hash_balance_current = sha256packed([0,0,0,balance]);
+    
+    field[2] hash_secret_key_current = sha256packed([0,0,0,secret_key_current]);
+    field[2] hash_secret_balance = sha256packed([hash_balance_current[0], hash_balance_current[1], hash_secret_key_current[0], hash_secret_key_current[1]]);
+    bool check_2 = ((hash_secret_balance[0] == h_curr_1) && (hash_secret_balance[1] == h_curr_2));
+
+    // checking for the coincidence of the balance division of the first part with the hash
+    field[2] hash_balance_part_1 = sha256packed([0,0,0,balance_part_1]);
+    field[2] hash_secret_key_part_1 = sha256packed([0,0,0,secret_key_1]);
+    field[2] hash_secret_balance_part_1 = sha256packed([hash_balance_part_1[0],hash_balance_part_1[1],hash_secret_key_part_1[0],hash_secret_key_part_1[1]]);
+    bool check_3 =((hash_secret_balance_part_1[0] == h_div_part_1_1) && (hash_secret_balance_part_1[1] == h_div_part_1_2));
+        
+
+    // checking for the coincidence of the balance division of the second part with the hash
+    field[2] hash_balance_part_2 = sha256packed([0,0,0,balance_part_2]);
+    field[2] hash_secret_key_part_2 = sha256packed([0,0,0,secret_key_2]);
+    field[2] hash_secret_balance_part_2 = sha256packed([hash_balance_part_2[0],hash_balance_part_2[1],hash_secret_key_part_2[0],hash_secret_key_part_2[1]]);
+    bool check_4 =((hash_secret_balance_part_2[0] == h_div_part_2_1) && (hash_secret_balance_part_2[1] == h_div_part_2_2));
+
+    return check_1 && check_2 && check_3 && check_4;
+}

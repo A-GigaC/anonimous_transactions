@@ -13,7 +13,7 @@ async function main() {
   await lock.waitForDeployment();
 
   console.log(
-    `Lock with ${ethers.formatEther(
+    `Lock with ${ethers}.formatEther(
       lockedAmount
     )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
   );

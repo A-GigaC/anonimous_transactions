@@ -1,0 +1,12 @@
+import "hashes/sha256/512bitPacked" as sha256packed;
+
+def main(
+    private field balance, 
+    private field secret_key,
+    field h1, h2
+    ) -> bool {
+    field[2] hash_balance = sha256packed([0,0,0,balance]);
+    field[2] hash_secret = sha256packed([0,0,0,secret_key]);
+    field[2] hash_balance_secret = sha256packed([hash_balance[0], hash_balance[1], hash_secret[0], hash_secret[1]]);
+    return (hash_balance_secret[0]==h1) && (hash_balance_secret[1]==h2);
+}
